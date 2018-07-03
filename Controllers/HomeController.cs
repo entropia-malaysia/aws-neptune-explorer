@@ -50,18 +50,18 @@ namespace aws_neptune_explorer.Controllers
         {
             try
             {
-                var hostname = _configuration.GetSection("AzureCosmos").GetSection("HostName").Value;
-                var port = int.Parse(_configuration.GetSection("AzureCosmos").GetSection("Port").Value);
-                var authKey = _configuration.GetSection("AzureCosmos").GetSection("AuthKey").Value;
-                var database = _configuration.GetSection("AzureCosmos").GetSection("Database").Value;
-                var graph = _configuration.GetSection("AzureCosmos").GetSection("Graph").Value;
+                // var hostname = _configuration.GetSection("AzureCosmos").GetSection("HostName").Value;
+                // var port = int.Parse(_configuration.GetSection("AzureCosmos").GetSection("Port").Value);
+                // var authKey = _configuration.GetSection("AzureCosmos").GetSection("AuthKey").Value;
+                // var database = _configuration.GetSection("AzureCosmos").GetSection("Database").Value;
+                // var graph = _configuration.GetSection("AzureCosmos").GetSection("Graph").Value;
 
-                var gremlinServer = new GremlinServer(hostname, port, enableSsl: true, username: "/dbs/" + database + "/colls/" + graph, password: authKey);
-                var gremlinClient = new GremlinClient(gremlinServer, new GraphSON2Reader(), new GraphSON2Writer(), GremlinClient.GraphSON2MimeType);
+                // var gremlinServer = new GremlinServer(hostname, port, enableSsl: true, username: "/dbs/" + database + "/colls/" + graph, password: authKey);
+                // var gremlinClient = new GremlinClient(gremlinServer, new GraphSON2Reader(), new GraphSON2Writer(), GremlinClient.GraphSON2MimeType);
 
-                // var endpoint = _configuration.GetSection("AWS").GetSection("NeptuneEndpoint").Value;           
-                // var gremlinServer = new GremlinServer(endpoint);  
-                // var gremlinClient = new GremlinClient(gremlinServer);
+                var endpoint = _configuration.GetSection("AWS").GetSection("NeptuneEndpoint").Value;           
+                var gremlinServer = new GremlinServer(endpoint);  
+                var gremlinClient = new GremlinClient(gremlinServer);
 
             
                 var users = gremlinClient.SubmitAsync<dynamic>(query).Result;
