@@ -1,0 +1,11 @@
+/home/taher/aws-neptune-explorer/obj/Debug/netcoreapp2.0/aws-neptune-explorer.csprojResolveAssemblyReference.cache
+/home/taher/aws-neptune-explorer/obj/Debug/netcoreapp2.0/aws-neptune-explorer.csproj.CoreCompileInputs.cache
+/home/taher/aws-neptune-explorer/obj/Debug/netcoreapp2.0/aws-neptune-explorer.AssemblyInfoInputs.cache
+/home/taher/aws-neptune-explorer/obj/Debug/netcoreapp2.0/aws-neptune-explorer.AssemblyInfo.cs
+/home/taher/aws-neptune-explorer/bin/Debug/netcoreapp2.0/aws-neptune-explorer.deps.json
+/home/taher/aws-neptune-explorer/bin/Debug/netcoreapp2.0/aws-neptune-explorer.runtimeconfig.json
+/home/taher/aws-neptune-explorer/bin/Debug/netcoreapp2.0/aws-neptune-explorer.runtimeconfig.dev.json
+/home/taher/aws-neptune-explorer/bin/Debug/netcoreapp2.0/aws-neptune-explorer.dll
+/home/taher/aws-neptune-explorer/bin/Debug/netcoreapp2.0/aws-neptune-explorer.pdb
+/home/taher/aws-neptune-explorer/obj/Debug/netcoreapp2.0/aws-neptune-explorer.dll
+/home/taher/aws-neptune-explorer/obj/Debug/netcoreapp2.0/aws-neptune-explorer.pdb

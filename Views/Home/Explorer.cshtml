@@ -1,0 +1,47 @@
+@{
+    ViewData["Title"] = "Gremlin";
+}
+
+
+<link rel="stylesheet" href="~/css/jquery.json-viewer.css" />
+
+
+
+ 
+<h2>@ViewData["Title"]</h2>
+<input type="text" id="query" style="width:800px">
+<a class="btn btn-success" id="runQuery">Run</a>
+<br/>
+<pre id="json-renderer"></pre>
+
+@section Scripts {
+    <script src="~/js/jquery.json-viewer.js"></script>
+
+<script type="text/javascript">
+
+$(function() {
+   debugger;
+    var data = {
+  "message": "no data"
+};
+    $('#json-renderer').jsonViewer(data);
+});
+
+
+$('#runQuery').click(function(){
+
+    var query = $('#query').val();
+
+    $.ajax({
+            url: "/home/gremlin?query="+query,
+            
+            }).done(function(data) {
+               $('#json-renderer').jsonViewer(data);
+            }).error(function(message){
+                $('#json-renderer').jsonViewer(message);
+            });
+
+})
+</script>
+
+}
