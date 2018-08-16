@@ -5,6 +5,35 @@
 
 <link rel="stylesheet" href="~/css/jquery.json-viewer.css" />
 
+<style>
+    .loader {
+  height: 2px;
+  width: 100%;
+  position: relative;
+  overflow: hidden;
+  background-color: #ddd;
+}
+.loader:before{
+  display: block;
+  position: absolute;
+  content: "";
+  left: -200px;
+  width: 200px;
+  height: 2px;
+  background-color: #2c2e3e;
+  animation: loading 2s linear infinite;
+}
+
+@@keyframes loading {
+    from {left: -200px; width: 30%;}
+    50% {width: 30%;}
+    70% {width: 70%;}
+    80% { left: 50%;}
+    95% {left: 120%;}
+    to {left: 100%;}
+}
+</style>
+
 
 
  
@@ -12,7 +41,8 @@
 <input type="text" id="query" style="width:800px">
 <a class="btn btn-success" id="runQuery">Run</a>
 <br/>
-<pre id="json-renderer"></pre>
+<div class="loader" style="display:none"></div>
+<pre id="json-renderer" style="border-radius:0px;" ></pre>
 
 @section Scripts {
     <script src="~/js/jquery.json-viewer.js"></script>
@@ -31,17 +61,21 @@ $(function() {
 $('#runQuery').click(function(){
 
     var query = $('#query').val();
+    $('.loader').show();
 
     $.ajax({
             url: "/home/gremlin?query="+query,
-            
+            type: "POST",
             }).done(function(data) {
                $('#json-renderer').jsonViewer(data);
+               $('.loader').hide();
             }).error(function(message){
                 $('#json-renderer').jsonViewer(message);
+                $('.loader').hide();
             });
 
 })
+
 </script>
 
 }
