@@ -32,33 +32,85 @@
     95% {left: 120%;}
     to {left: 100%;}
 }
+
+#cy {
+  width: 700px;
+  height: 600px;
+  display: block;
+}
 </style>
 
 
 
  
 <h2>@ViewData["Title"]</h2>
-<input type="text" id="query" style="width:800px">
-<a class="btn btn-success" id="runQuery">Run</a>
-<br/>
-<div class="loader" style="display:none"></div>
-<pre id="json-renderer" style="border-radius:0px;" ></pre>
+
+
+
+
+<div class="row">
+    <div class="col-md-6">
+        <!-- <input type="text" id="query" > -->
+        <textarea rows="8" cols="63" id="query"></textarea>
+        <a class="btn btn-success" id="runQuery">Run</a>
+        <br/>
+        <div class="loader" style="display:none"></div>
+        <pre id="json-renderer" style="border-radius:0px;" ></pre>
+
+    </div>
+    <div class="col-md-6">
+        <input type="text" id="chartQuery" >
+        <a class="btn btn-success" id="runChartQuery">Visualize</a>
+        <div id="cy"></div>
+    </div>
+</div>
 
 @section Scripts {
     <script src="~/js/jquery.json-viewer.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/cytoscape/3.2.16/cytoscape.js"></script>
 
 <script type="text/javascript">
 
 $(function() {
-   debugger;
     var data = {
-  "message": "no data"
-};
+        "message": "no data"
+    };
+
     $('#json-renderer').jsonViewer(data);
-});
+
+    var cy = cytoscape({
+
+        container: document.getElementById('cy'), // container to render in
+
+        style: [ // the stylesheet for the graph
+            {
+            selector: 'node',
+            style: {
+                'background-color': '#666',
+                'label': 'data(label)'
+            }
+            },
+
+            {
+            selector: 'edge',
+            style: {
+                'width': 3,
+                'line-color': '#ccc',
+                'target-arrow-color': '#ccc',
+                'target-arrow-shape': 'triangle',
+                'label': 'data(label)'
+            }
+            }
+        ]
+
+        
+
+    });
 
 
-$('#runQuery').click(function(){
+
+
+    $('#runQuery').click(function(){
 
     var query = $('#query').val();
     $('.loader').show();
@@ -74,7 +126,51 @@ $('#runQuery').click(function(){
                 $('.loader').hide();
             });
 
-})
+    });
+
+
+    $('#runChartQuery').click(function(){
+
+    var id = $('#chartQuery').val();    
+
+    $.ajax({
+            url: "/home/gremlin?query=g.V('"+id+"').both().as('v').project('vertex', 'edges').by(select('v')).by(bothE().fold())",
+            type: "POST",
+            }).done(function(data) {
+
+                var list = [];
+
+                data.forEach(element => {
+                    
+                    cy.add({ data: { id: element.vertex.Id   ,label:element.vertex.Label }});
+                    
+                    element.edges.forEach(elementEdge => {       
+                        cy.add({ data: { id: elementEdge.InV.Id,label:elementEdge.InV.Label }});
+                        cy.add({ data: { id: elementEdge.OutV.Id ,label:elementEdge.OutV.Label }});
+
+                        list.push({ data: { id: elementEdge.Id,label:elementEdge.Label , source: elementEdge.InV.Id ,target:elementEdge.OutV.Id }});
+                    });
+
+                });
+
+                list.forEach(element => {
+                    cy.add(element);                    
+                });
+
+                var layout = cy.layout({ name: 'breadthfirst' });
+                layout.run();
+
+            }).error(function(message){
+               alert('Error showing graph');
+            });
+
+    });
+
+
+});
+
+
+
 
 </script>
 
