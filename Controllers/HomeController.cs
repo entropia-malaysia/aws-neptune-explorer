@@ -60,7 +60,7 @@ namespace aws_neptune_explorer.Controllers
                 // var gremlinClient = new GremlinClient(gremlinServer, new GraphSON2Reader(), new GraphSON2Writer(), GremlinClient.GraphSON2MimeType);
 
                 var endpoint = _configuration.GetSection("AWS").GetSection("NeptuneEndpoint").Value;           
-                var gremlinServer = new GremlinServer(endpoint);  
+                var gremlinServer = new GremlinServer(endpoint, 8182, enableSsl: true );  
                 var gremlinClient = new GremlinClient(gremlinServer);
 
             
